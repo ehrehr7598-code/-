@@ -1,0 +1,42 @@
+import streamlit as st
+
+class Facility:
+    def __init__(self, name, facility_type, target_type, mild_severe, parental_education, adult_youth):
+        self.name = name
+        self.facility_type = facility_type
+        self.target_type = target_type
+        self.mild_severe = mild_severe
+        self.parental_education = parental_education
+        self.adult_youth = adult_youth
+
+
+facilities = [
+    Facility("서울센터", 1, 1, 2, 1, 1),
+    Facility("부산센터", 1, 1, 1, 1, 1),
+    Facility("대구센터", 8, 7, 2, 1, 1),
+]
+
+st.title("시설 필터링")
+
+con1 = st.selectbox("시설 유형 조건", [-1,1,2,3,4,5,6,7,8], format_func=lambda x: "해당 없음" if x == -1 else f"{x}")
+con2 = st.selectbox("대상 유형 조건", [-1,1,2,3,4,5,6,7], format_func=lambda x: "해당 없음" if x == -1 else f"{x}")
+con3 = st.selectbox("경증/중증", [-1,1,2], format_func=lambda x: "해당 없음" if x == -1 else f"{x}")
+con4 = st.selectbox("부모교육 여부", [-1,1,2], format_func=lambda x: "해당 없음" if x == -1 else f"{x}")
+con5 = st.selectbox("성인/청소년", [-1,1,2], format_func=lambda x: "해당 없음" if x == -1 else f"{x}")
+
+if st.button("결과 보기"):
+    result = []
+    for f in facilities:
+        if ((con1 == f.facility_type or con1 == -1) and
+            (con2 == f.target_type or con2 == -1) and
+            (con3 == f.mild_severe or con3 == -1) and
+            (con4 == f.parental_education or con4 == -1) and
+            (con5 == f.adult_youth or con5 == -1)):
+            result.append(f.name)
+
+    if result:
+        st.success("결과:")
+        for name in result:
+            st.write(name)
+    else:
+        st.error("결과 없음")
